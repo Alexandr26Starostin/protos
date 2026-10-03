@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package auth; //define namespace 
+
+option go_package = "starostin.sso.v1;ssov1";  //parameter for generating code on Go
+
+service Auth {  //description of service
+    rpc Register (RegisterRequest) returns (RegisterResponse);  //reg users
+    rpc Login    (LoginRequest)    returns (LoginResponse);     
+    rpc IsAdmin  (IsAdminRequest)  returns (IsAdminResponse);     
+}
+
+//User registers in SSO), but login in any app/service
+
+//-------------------------------------------------------------------
+
+message RegisterRequest {
+    string email    = 1;  //Email of the user to register
+    string password = 2;  //Password of the user to register
+}
+
+message RegisterResponse {
+    int64 user_id = 1; //User ID of the registered user
+}
+
+//-------------------------------------------------------------------
+
+message LoginRequest {
+    string email    = 1;  //Email of the user to login (for authorization)
+    string password = 2;  //Password of the user to login (for authorization)
+    int32  app_id   = 3;  //ID of the app to login to (id of the app, where user wants to login)
+}
+
+message LoginResponse {
+    string token= 1; //Auth token of the logged in user
+                     //token is encoded
+}
+
+//-------------------------------------------------------------------
+
+message IsAdminRequest {
+    int64  user_id   = 3;  //User ID to validate
+}
+
+message IsAdminResponse {
+    bool is_admin = 1;  //Indicates whether the user is an admin
+}
