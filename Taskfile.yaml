@@ -1,0 +1,17 @@
+version: "3"
+
+tasks:
+    generate:
+        aliases:
+            - gen
+        desc: "Generate code from proto files"
+        cmds:
+            - protoc -I proto  proto/sso/sso.proto  --go_out=gen/go --go_opt=paths=source_relative --go-grpc_out=gen/go --go-grpc_opt=paths=source_relative
+
+    clear:
+        aliases:
+            - remove
+        desc: "remove files with code, which was generated from proto files"
+        cmds:
+            - rm gen/go/sso/sso.pb.go
+            - rm gen/go/sso/sso_grpc.pb.go
